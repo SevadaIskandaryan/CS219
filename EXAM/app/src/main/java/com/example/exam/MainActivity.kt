@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = "gameScreen"
                 ) {
                     composable("gameScreen") {
-                        GameScreen(navController = navController, initialValue = randomInitialValue)
+                        GameScreen(navController = navController, targetValue = randomInitialValue)
                     }
                 }
             }
