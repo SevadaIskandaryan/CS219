@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 
 import kotlin.random.Random
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,14 +40,13 @@ class MainActivity : ComponentActivity() {
             EXAMTheme {
                 // A surface container using the 'background' color from the theme
                 val navController = rememberNavController()
-                val randomInitialValue = generateRandomTargetValue()
 
                 NavHost(
                     navController = navController,
                     startDestination = "gameScreen"
                 ) {
                     composable("gameScreen") {
-                        GameScreen(navController = navController, targetValue = randomInitialValue)
+                        GameScreen(navController = navController)
                     }
                 }
             }
@@ -55,9 +55,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GameScreen(navController: NavController, targetValue: Float) {
+fun GameScreen(navController: NavController) {
+    var targetValue by remember { mutableStateOf(generateRandomTargetValue()) }
     var sliderValue by remember { mutableStateOf(50.0f) }
     var score by remember { mutableStateOf(0) }
+    var TotalScore by remember { mutableStateOf(0) }
     var feedback by remember { mutableStateOf("") }
     
     Column(
@@ -82,15 +84,18 @@ fun GameScreen(navController: NavController, targetValue: Float) {
             onClick = {
                       val proximity = abs(targetValue - sliderValue)
                       if(proximity <= 3.0 ){
-                          score+= 5
+                          score = 5
                           feedback = "exelent"
                       } else if (proximity  <=8){
-                          score+= 1
+                          score = 3
                           feedback = "good"
                       }else {
                           score = 0
                           feedback = "Keep trying! You're not quite there."
                       }
+                    TotalScore+= score
+                    targetValue = generateRandomTargetValue()
+                    sliderValue = 50.0f
             },
             modifier = Modifier.padding(16.dp)
         ) {
@@ -100,6 +105,7 @@ fun GameScreen(navController: NavController, targetValue: Float) {
         Text("Actual value: $targetValue")       // for debugging
         Text("Your value: $sliderValue")
         Text("Score: $score")
+        Text("TotalScore: $TotalScore")
         Text(feedback)
     }
 }
