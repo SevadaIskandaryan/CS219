@@ -96,7 +96,7 @@ fun UserList(users: List<Post>) {
                             .padding(8.dp)
                     ) {
                         Text(
-                            text = "UserId" + user.userId.toString(),
+                            text = "UserId: " + user.userId.toString(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -114,7 +114,7 @@ fun UserList(users: List<Post>) {
 }
 
 object RetrofitClient {
-    private const val BASE_URL = "https://jsonplaceholder.typicode.com/posts/"
+    private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -129,6 +129,6 @@ object RetrofitClient {
 }
 
 interface UserService {
-    @GET("users")
+    @GET("posts")
     suspend fun getUsers(): List<Post>
 }
