@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -78,6 +79,7 @@ class UserViewModel : ViewModel() {
 
 @Composable
 fun UserList(users: List<Post>) {
+    var temp = 0
     LazyColumn {
         items(users) { user ->
             Column(
@@ -85,6 +87,14 @@ fun UserList(users: List<Post>) {
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
+                if(temp != user.userId){
+                    Text(
+                        text = "UserId: " + user.userId.toString(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    temp = user.userId
+                }
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -95,16 +105,19 @@ fun UserList(users: List<Post>) {
                             .fillMaxWidth()
                             .padding(8.dp)
                     ) {
-                        Text(
-                            text = "UserId: " + user.userId.toString(),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = user.title,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
+                        if(temp != 0) {
+                            Text(
+                                text = user.title,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = user.body,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
